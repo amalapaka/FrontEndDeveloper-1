@@ -102,7 +102,7 @@ public class BookDriver {
 	 */
 	public static void removeBook() {
 		try {
-			System.out.println("Enter ISBN: ");
+			System.out.print("Enter ISBN: ");
 			String isbn = scnr.next();
 			if(validISBN(isbn)) {
 				Book remBook = htm.remove(isbn);
