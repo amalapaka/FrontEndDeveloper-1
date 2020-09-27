@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class BookDriver {
 	private static Scanner scnr = new Scanner(System.in);
 	private static int action = 0;
-	private static BackEndHash bh = new BackEndHash();
+	private static HashTableMap<String, Book> htm = new HashTableMap<String, Book>();
 
 	public static void addBook() {
 		try {
@@ -20,7 +20,7 @@ public class BookDriver {
 			String isbn = scnr.next();
 			if(validISBN(isbn)) {
 			Book book = new Book(title, author, publisher, publication_year, isbn);
-			bh.add(book);
+			htm.put(isbn, book);
 			System.out.println("Added " + book.getTitle());
 		}
 		else {
@@ -37,10 +37,36 @@ public class BookDriver {
 		try {
 		System.out.println("Enter ISBN");
 		String isbn = scnr.next();
-		Book book = bh.get(isbn);
+		Book book = htm.get(isbn);
 		if(validISBN(isbn)) {
-			System.out.println("Title: " + book.getTitle() + "\n Author: " + book.getAuthor()
-					+ "\n Publisher: " + book.getPublisher() + "\n Publication Year: " + book.getPublicationYear());	
+			while(action != 6) {
+				System.out.println();
+				System.out.println("Please choose which piece of information you want!");
+				System.out.println("Enter 1 for the title.");
+				System.out.println("Enter 2 for the author.");
+				System.out.println("Enter 3 for the publisher. ");
+				System.out.println("Enter 4 for the publication year.");
+				System.out.println("Enter 5 for the MLA citation.");
+				System.out.println("Enter 6 to go back.");
+				System.out.println();
+				System.out.print("Choice: ");
+				action = scnr.nextInt();
+				if(action == 1) {
+					System.out.println("Title: " + book.getTitle());
+				} else if(action == 2) {
+					System.out.println("Author: " + book.getAuthor());
+				} else if(action == 3) {
+					System.out.println("Publisher: " + book.getPublisher());;
+				} else if(action == 4) {
+					System.out.println("Publication year: " + book.getPublicationYear());
+				} else if(action == 5) {
+					System.out.println("MLA citation: " + book.getCitation());
+				}
+				else {
+					break;
+				}
+			}
+			
 		}
 		else {
 			System.out.println("Invalid ISBN");
@@ -57,13 +83,10 @@ public class BookDriver {
 			System.out.println("Enter ISBN: ");
 			String isbn = scnr.next();
 			if(validISBN(isbn)) {
-				Book remBook = bh.remove(isbn);
+				Book remBook = htm.remove(isbn);
 				System.out.println("Removed " + remBook.getTitle());
 			}
-			else {
-				System.out.println("Invalid ISBN");
-				scnr.nextLine();
-			}
+			
 		}
 		catch (Exception e) {
 			System.out.println("Book not found.");
@@ -77,7 +100,7 @@ public class BookDriver {
 		}
 		else {
 			for(int i = 0; i < isbn.length(); i++) {
-				if((isbn.toLowerCase().charAt(i) < 49 || isbn.toLowerCase().charAt(i) > 57) 
+				if((isbn.toLowerCase().charAt(i) < 48 || isbn.toLowerCase().charAt(i) > 57) 
 						&& isbn.toLowerCase().charAt(i) != 'x') {
 					return false;
 				}
@@ -98,7 +121,7 @@ public class BookDriver {
 			System.out.println();
 			System.out.print("Action: ");
 	try {
-		DataWrangler.readInputFile(bh, "Book_data.csv");
+		DataWrangler.readInputFile(htm, "Book_data.csv");
 			action = scnr.nextInt();
 			if(action == 1) {
 				addBook();
@@ -120,3 +143,4 @@ public class BookDriver {
 			}
 	}
 }
+
