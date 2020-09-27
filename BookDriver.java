@@ -1,10 +1,24 @@
+// --== CS400 File Header Information ==--
+// Name: Amulya Malapaka
+// Email: amalapaka@wisc.edu
+// Team: Team AD
+// TA: Sophie Stephenson
+// Lecturer: Professor Gary Dahl
+// Notes to Grader: <optional extra notes>
 import java.util.Scanner;
-
+/**
+ * Front end for the project
+ * @author Amulya Malapaka
+ *
+ */
 public class BookDriver {
 	private static Scanner scnr = new Scanner(System.in);
 	private static int action = 0;
 	private static HashTableMap<String, Book> htm = new HashTableMap<String, Book>();
-
+/**
+ * Gives user the opportunity to add a book and makes sure the ISBN is valid
+ * 	and catches inputs with the wrong type
+ */
 	public static void addBook() {
 		try {
 			scnr.nextLine();
@@ -33,9 +47,13 @@ public class BookDriver {
 			scnr.nextLine();
 		}
 	}
+	/**
+	 * Gives user the opportunity to get specific information about a book and makes sure the ISBN is valid
+	 * 	and catches inputs with ISBNs that have been removed
+	 */
 	public static void getBook() {
 		try {
-		System.out.println("Enter ISBN");
+		System.out.print("Enter ISBN: ");
 		String isbn = scnr.next();
 		Book book = htm.get(isbn);
 		if(validISBN(isbn)) {
@@ -69,15 +87,19 @@ public class BookDriver {
 			
 		}
 		else {
-			System.out.println("Invalid ISBN");
+			System.out.println("Wrong input");
 			scnr.nextLine();
 		}
 		}
 		catch (Exception e) {
-			System.out.println("Wrong input");
+			System.out.println("That ISBN is not in the library.");
 			scnr.nextLine();
 		}
 	}
+	/**
+	 * Removes book and makes sure the ISBN is valid
+	 * 	and catches inputs that don't exist in the library
+	 */
 	public static void removeBook() {
 		try {
 			System.out.println("Enter ISBN: ");
@@ -94,6 +116,11 @@ public class BookDriver {
 		}
 		
 	}
+	/**
+	 * Makes sure ISBN is valid by checking length and that the string only contain numbers and the character 'x'
+	 * @param isbn - provided isbn
+	 * @return - whether the isbn is valid or not
+	 */
 	public static boolean validISBN(String isbn) {
 		if(isbn.length() != 10 && isbn.length() != 13) {
 			return false;
@@ -109,8 +136,21 @@ public class BookDriver {
 		}
 		return true;
 	}
-	public static void main(String[] args) {			
+	/**
+	 * Reads DataWrangler file and catches FileNotFoundException
+	 */
+	public static void readDWF(){
+		try {
+			DataWrangler.readInputFile(htm, "Book_data.csv");
+		}
+		catch(java.io.FileNotFoundException e) {
+			System.out.println(e);
+		}
+	}
+	public static void main(String[] args)  {	
+			readDWF();
 			System.out.println("Welcome to the library!");
+			//while loop to make sure the program doesn't take another action if 4 has been pressed
 			while(action != 4) {
 			System.out.println();
 			System.out.println("Please choose an action!");
@@ -121,7 +161,7 @@ public class BookDriver {
 			System.out.println();
 			System.out.print("Action: ");
 	try {
-		DataWrangler.readInputFile(htm, "Book_data.csv");
+		
 			action = scnr.nextInt();
 			if(action == 1) {
 				addBook();
@@ -143,4 +183,3 @@ public class BookDriver {
 			}
 	}
 }
-
