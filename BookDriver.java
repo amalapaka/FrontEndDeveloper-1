@@ -32,7 +32,7 @@ public class BookDriver {
 			int publication_year = scnr.nextInt();
 			System.out.print("Enter ISBN: ");
 			String isbn = scnr.next();
-			if(validISBN(isbn)) {
+			if(validISBN(isbn) && !htm.containsKey(isbn)) {
 			Book book = new Book(title, author, publisher, publication_year, isbn);
 			htm.put(isbn, book);
 			System.out.println("Added " + book.getTitle());
